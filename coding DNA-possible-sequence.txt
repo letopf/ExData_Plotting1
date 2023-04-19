@@ -1,0 +1,45 @@
+from itertools import product
+import pandas as pd
+
+def all_possibilities_w_space(seq):
+   """return list of all possible sequences given a completely ambiguous DNA input. Allow spaces"""
+   d = {"N":"ACGT "}
+   return  list(map("".join, product(*map(d.get, seq))))
+
+
+print(all_possibilities_w_space("N"*6)) # example of length two
+
+
+# input list
+inputList = all_possibilities_w_space("N"*6)
+
+# remove spaces hujung2
+#inputList = [one_seq.strip(' ') for one_seq in inputList]
+
+# remove all spaces
+inputList = [one_seq.replace(" ", "") for one_seq in inputList]
+
+# Creating a new data frame
+newDataframe = pd.DataFrame()
+
+# Remove duplicate
+new_inputList = []
+
+for one_sequence in inputList:
+    if one_sequence not in new_inputList:
+        new_inputList.append(one_sequence)
+
+# Splitting the list into two pandas columns, one for the "Sequence" and
+
+# the second one for the Country using slicing.
+newDataframe['Sequence'] = new_inputList
+# newDataframe['Country'] = i
+
+# Converting the data frame to an excel file
+newDataframe.to_excel('outputExcelFile.xlsx', index = False)
+
+# Reading the data from the outputExcelFile
+excelData=pd.read_excel('outputExcelFile.xlsx')
+
+#Printing the data frame
+print(excelData)
